@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
     <title>Rock Paper Scissors</title>
-</head>
-<body>
-    <h1>Rock Paper Scissors</h1>
-    <button id="Rock">Rock</button>
-    <button id="Paper">Paper</button>
-    <button id="Scissors">Scissors</button>
-    <h4>Running Score</h4>
-    <div id="human-score">Human: 0 </div>
-    <div id="computer-score">🤖 : 0 </div>
+  </head>
+  <body>
+    <h1 class="center">Rock Paper Scissors</h1>
+    <div class="flex gap50 justify-center bottom-margin-100
+    top-margin-50">
+      <div class="flex justify-center gap5 border-solid padding-100">
+        <button id="Rock">Rock</button>
+        <button id="Paper">Paper</button>
+        <button id="Scissors">Scissors</button>
+      </div>
+      <div class="flex justify-center gap5 border-solid padding-100">
+        <button id="cRock">Rock</button>
+        <button id="cPaper">Paper</button>
+        <button id="cScissors">Scissors</button>
+      </div>
+    </div>
+    <h4 class="flex justify-center">Running Score</h4>
+    <div class="flex gap100 justify-center">
+      <div id="human-score">Human: 0</div>
+      <div id="computer-score">Computer : 0</div>
+    </div>
 
     <script src="rock-paper-scissors.js" defer></script>
-    
-
-    
-</body>
+  </body>
 </html>

@@ -23,7 +23,7 @@ buttons.forEach(function (button) {
             nTies += 1;
         }
         var humanResult = "Human: ".concat(playerScore);
-        var computerResult = "\uD83E\uDD16 : ".concat(computerScore);
+        var computerResult = "Computer : ".concat(computerScore);
         var humanScoreDisplay = document.getElementById("human-score");
         var computerScoreDisplay = document.getElementById("computer-score");
         humanScoreDisplay.textContent = humanResult;

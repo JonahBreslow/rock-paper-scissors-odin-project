@@ -21,7 +21,7 @@ buttons.forEach((button) => {
       nTies += 1
     }
     let humanResult = `Human: ${playerScore}`
-    let computerResult = `🤖 : ${computerScore}`
+    let computerResult = `Computer : ${computerScore}`
     let humanScoreDisplay = document.getElementById("human-score")!;
     let computerScoreDisplay = document.getElementById("computer-score")!;
     humanScoreDisplay.textContent = humanResult
