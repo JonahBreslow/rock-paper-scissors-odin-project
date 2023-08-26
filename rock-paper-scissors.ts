@@ -4,6 +4,32 @@ enum Choice {
   Scissors = "Scissors",
 }
 
+let playerScore = 0;
+let computerScore = 0;
+let nTies = 0;
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    let playerChoice = Choice[button.id];
+    let computerChoice = getComputerChoice();
+    let score = playRound(playerChoice, computerChoice);
+    if (score === 1) {
+      playerScore +=1
+    } else if (score === -1) {
+      computerScore +=1
+    } else {
+      nTies += 1
+    }
+    let humanResult = `Human: ${playerScore}`
+    let computerResult = `🤖 : ${computerScore}`
+    let humanScoreDisplay = document.getElementById("human-score")!;
+    let computerScoreDisplay = document.getElementById("computer-score")!;
+    humanScoreDisplay.textContent = humanResult
+    computerScoreDisplay.textContent = computerResult
+  });
+});
+
+
 function randomNumber(n: number): number {
   let result = Math.floor(Math.random() * n);
   return result;
@@ -16,15 +42,15 @@ function getComputerChoice(): Choice {
   return choice;
 }
 
-function getPlayerChoice(): Choice {
-  const playerChoice = prompt("Choose: Rock, Paper, or Scissors");
-  if (playerChoice === null) {
-    throw new Error("Must choose Rock, Paper, or Scissors");
-  } else {
-    let choice = Choice[playerChoice];
-    return choice;
-  }
-}
+// function getPlayerChoice(): Choice {
+//   const playerChoice = prompt("Choose: Rock, Paper, or Scissors");
+//   if (playerChoice === null) {
+//     throw new Error("Must choose Rock, Paper, or Scissors");
+//   } else {
+//     let choice = Choice[playerChoice];
+//     return choice;
+//   }
+// }
 
 function playRound(playerSelection: Choice, computerSelection: Choice): number {
   switch (playerSelection) {
@@ -67,20 +93,20 @@ function playRound(playerSelection: Choice, computerSelection: Choice): number {
   }
 }
 
-function game(numGames: number): undefined {
-  let score = 0;
-  for (let i = 0; i < numGames; i++) {
-    let playerChoice = getPlayerChoice();
-    let computerChoice = getComputerChoice();
-    score += playRound(playerChoice, computerChoice);
-  }
-  if (score === 0) {
-    console.log("Game over: it's a tie!");
-  } else if (score > 0) {
-    console.log("Game over: you won!");
-  } else {
-    console.log("Game over: you lost :(");
-  }
-}
+// function game(numGames: number): undefined {
+//   let score = 0;
+//   for (let i = 0; i < numGames; i++) {
+//     let playerChoice = getPlayerChoice();
+//     let computerChoice = getComputerChoice();
+//     score += playRound(playerChoice, computerChoice);
+//   }
+//   if (score === 0) {
+//     console.log("Game over: it's a tie!");
+//   } else if (score > 0) {
+//     console.log("Game over: you won!");
+//   } else {
+//     console.log("Game over: you lost :(");
+//   }
+// }
 
-game(5)
+// game(1)

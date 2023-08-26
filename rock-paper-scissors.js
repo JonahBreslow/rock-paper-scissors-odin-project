@@ -4,6 +4,32 @@ var Choice;
     Choice["Paper"] = "Paper";
     Choice["Scissors"] = "Scissors";
 })(Choice || (Choice = {}));
+var playerScore = 0;
+var computerScore = 0;
+var nTies = 0;
+var buttons = document.querySelectorAll("button");
+buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        var playerChoice = Choice[button.id];
+        var computerChoice = getComputerChoice();
+        var score = playRound(playerChoice, computerChoice);
+        if (score === 1) {
+            playerScore += 1;
+        }
+        else if (score === -1) {
+            computerScore += 1;
+        }
+        else {
+            nTies += 1;
+        }
+        var humanResult = "Human: ".concat(playerScore);
+        var computerResult = "\uD83E\uDD16 : ".concat(computerScore);
+        var humanScoreDisplay = document.getElementById("human-score");
+        var computerScoreDisplay = document.getElementById("computer-score");
+        humanScoreDisplay.textContent = humanResult;
+        computerScoreDisplay.textContent = computerResult;
+    });
+});
 function randomNumber(n) {
     var result = Math.floor(Math.random() * n);
     return result;
@@ -14,16 +40,15 @@ function getComputerChoice() {
     var choice = Choice[choices[index]];
     return choice;
 }
-function getPlayerChoice() {
-    var playerChoice = prompt("Choose: Rock, Paper, or Scissors");
-    if (playerChoice === null) {
-        throw new Error("Must choose Rock, Paper, or Scissors");
-    }
-    else {
-        var choice = Choice[playerChoice];
-        return choice;
-    }
-}
+// function getPlayerChoice(): Choice {
+//   const playerChoice = prompt("Choose: Rock, Paper, or Scissors");
+//   if (playerChoice === null) {
+//     throw new Error("Must choose Rock, Paper, or Scissors");
+//   } else {
+//     let choice = Choice[playerChoice];
+//     return choice;
+//   }
+// }
 function playRound(playerSelection, computerSelection) {
     switch (playerSelection) {
         case Choice.Rock:
@@ -64,21 +89,19 @@ function playRound(playerSelection, computerSelection) {
             }
     }
 }
-function game(numGames) {
-    var score = 0;
-    for (var i = 0; i < numGames; i++) {
-        var playerChoice = getPlayerChoice();
-        var computerChoice = getComputerChoice();
-        score += playRound(playerChoice, computerChoice);
-    }
-    if (score === 0) {
-        console.log("Game over: it's a tie!");
-    }
-    else if (score > 0) {
-        console.log("Game over: you won!");
-    }
-    else {
-        console.log("Game over: you lost :(");
-    }
-}
-game(5);
+// function game(numGames: number): undefined {
+//   let score = 0;
+//   for (let i = 0; i < numGames; i++) {
+//     let playerChoice = getPlayerChoice();
+//     let computerChoice = getComputerChoice();
+//     score += playRound(playerChoice, computerChoice);
+//   }
+//   if (score === 0) {
+//     console.log("Game over: it's a tie!");
+//   } else if (score > 0) {
+//     console.log("Game over: you won!");
+//   } else {
+//     console.log("Game over: you lost :(");
+//   }
+// }
+// game(1)
