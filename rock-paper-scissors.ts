@@ -4,8 +4,15 @@ enum Choice {
   Scissors = "Scissors",
 }
 
+// DOM elements
 const startButton = document.getElementById("start-game")!;
-const tryAgain = document.getElementById("try-again")!;
+const tryAgainButton = document.getElementById("try-again")!;
+const container = document.getElementById("container")!;
+const humanScoreDisplay = document.getElementById("human-score")!;
+const computerScoreDisplay = document.getElementById("computer-score")!;
+const roundAnnouncement = document.getElementById("roundAnnouncement")!;
+
+// Game board HTML
 let gameBoard = `<div id="game-container">
       <div
         class="flex flex-wrap gap50 justify-center bottom-margin-20 top-margin-50"
@@ -32,64 +39,78 @@ let gameBoard = `<div id="game-container">
       <h3 id="roundAnnouncement"></h3>
     </div>`;
 
-startButton.addEventListener("click", () => {
-  let elem = document.getElementById("start-game-div")!;
-  console.log(elem);
-  elem.parentNode?.removeChild(elem);
-  elem = document.getElementById("container")!;
-  elem.innerHTML = gameBoard;
-});
-
+// Initialize game state
 let playerScore = 0;
 let computerScore = 0;
-let announceText: string;
 let nTies = 0;
+let announceText: string;
 
-document
-  .getElementById("container")!
-  .addEventListener("click", function (event: MouseEvent) {
+// Event Listeners
+startButton.addEventListener("click", startGame());
+
+container.addEventListener("click", handleGamePlay());
+
+// Functions
+function handleGamePlay(): (this: HTMLElement, ev: MouseEvent) => any {
+  return function (event: MouseEvent) {
     const button = event.target as HTMLButtonElement;
-    console.log(button);
-    if (
-      button &&
-      button instanceof HTMLButtonElement &&
-      button.id != "start-game" &&
-      button.id != "try-again"
-    ) {
-      let playerChoice = Choice[button.id];
-      let computerChoice = getComputerChoice();
-      let score = playRound(playerChoice, computerChoice);
-      if (score === 1) {
-        playerScore += 1;
-        announceText = `You win! ${playerChoice} beats ${computerChoice}`;
-      } else if (score === -1) {
-        computerScore += 1;
-        announceText = `You lose :( ${computerChoice} beats ${playerChoice}`;
-      } else {
-        nTies += 1;
-        announceText = `It's a tie: You both chose ${computerChoice}`;
-      }
-      let humanResult = `Score: ${playerScore}`;
-      let computerResult = `Score: ${computerScore}`;
-      let humanScoreDisplay = document.getElementById("human-score")!;
-      let computerScoreDisplay = document.getElementById("computer-score")!;
-      let roundAnnouncement = document.getElementById("roundAnnouncement")!;
-      if (playerScore === 5) {
-        endGame("Humans Win!");
-      } else if (computerScore === 5) {
-        endGame("Machines Win :(");
-      } else {
-        roundAnnouncement.textContent = announceText;
-      }
-      humanScoreDisplay.textContent = humanResult;
-      computerScoreDisplay.textContent = computerResult;
+    if (isButton(button) && button.id === "try-again") {
+      resetGame();
+    } else if (isButton(button) && button.id != "start-game") {
+      playGame(button);
     }
-  });
+  };
+}
 
-function resetGame() {
+function playGame(button: HTMLButtonElement): undefined {
+  let playerChoice = Choice[button.id];
+  let computerChoice = getComputerChoice();
+  let score = playRound(playerChoice, computerChoice);
+  if (score === 1) {
+    playerScore += 1;
+    announceText = `You win! ${playerChoice} beats ${computerChoice}`;
+  } else if (score === -1) {
+    computerScore += 1;
+    announceText = `You lose :( ${computerChoice} beats ${playerChoice}`;
+  } else {
+    nTies += 1;
+    announceText = `It's a tie: You both chose ${computerChoice}`;
+  }
+  let humanResult = `Score: ${playerScore}`;
+  let computerResult = `Score: ${computerScore}`;
+  let humanScoreDisplay = document.getElementById("human-score")!;
+  let computerScoreDisplay = document.getElementById("computer-score")!;
+  let roundAnnouncement = document.getElementById("roundAnnouncement")!;
+  if (playerScore === 5) {
+    endGame("Humans Win!");
+  } else if (computerScore === 5) {
+    endGame("Machines Win :(");
+  } else {
+    roundAnnouncement.textContent = announceText;
+  }
+  humanScoreDisplay.textContent = humanResult;
+  computerScoreDisplay.textContent = computerResult;
+}
+
+function isButton(button: HTMLButtonElement): boolean {
+  return button && button instanceof HTMLButtonElement;
+}
+
+function startGame(): (this: HTMLElement, ev: MouseEvent) => undefined {
+  return () => {
+    let elem = document.getElementById("start-game-div")!;
+    console.log(elem);
+    elem.parentNode?.removeChild(elem);
+    elem = document.getElementById("container")!;
+    elem.innerHTML = gameBoard;
+  };
+}
+
+function resetGame(): undefined {
   playerScore = 0;
   computerScore = 0;
   nTies = 0;
+  container.innerHTML = gameBoard;
 }
 
 function endGame(text: string): undefined {
@@ -109,11 +130,10 @@ function endGame(text: string): undefined {
   const tryAgainButton = document.getElementById("try-again")!;
   tryAgainButton.addEventListener("click", () => {
     resetGame();
-    elem.innerHTML = ""; // Clear the container
-    elem.innerHTML = gameBoard 
+    elem.innerHTML = "";
+    elem.innerHTML = gameBoard;
   });
 }
-
 
 function randomNumber(n: number): number {
   let result = Math.floor(Math.random() * n);

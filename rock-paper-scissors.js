@@ -4,67 +4,86 @@ var Choice;
     Choice["Paper"] = "Paper";
     Choice["Scissors"] = "Scissors";
 })(Choice || (Choice = {}));
+// DOM elements
 var startButton = document.getElementById("start-game");
-var tryAgain = document.getElementById("try-again");
+var tryAgainButton = document.getElementById("try-again");
+var container = document.getElementById("container");
+var humanScoreDisplay = document.getElementById("human-score");
+var computerScoreDisplay = document.getElementById("computer-score");
+var roundAnnouncement = document.getElementById("roundAnnouncement");
+// Game board HTML
 var gameBoard = "<div id=\"game-container\">\n      <div\n        class=\"flex flex-wrap gap50 justify-center bottom-margin-20 top-margin-50\"\n      >\n        <div>\n          <h2>Human</h2>\n          <div class=\"flex justify-center gap5 border-solid padding-100\">\n            <button id=\"Rock\">Rock</button>\n            <button id=\"Paper\">Paper</button>\n            <button id=\"Scissors\">Scissors</button>\n          </div>\n          <h3 id=\"human-score\">Score:</h3>\n        </div>\n        <div>\n          <h2>Computer</h2>\n          <div class=\"flex justify-center gap5 border-solid padding-100\">\n            <button id=\"cRock\">Rock</button>\n            <button id=\"cPaper\">Paper</button>\n            <button id=\"cScissors\">Scissors</button>\n          </div>\n          <h3 id=\"computer-score\">Score:</h3>\n        </div>\n      </div>\n      <h3 id=\"roundAnnouncement\"></h3>\n    </div>";
-startButton.addEventListener("click", function () {
-    var _a;
-    var elem = document.getElementById("start-game-div");
-    console.log(elem);
-    (_a = elem.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(elem);
-    elem = document.getElementById("container");
-    elem.innerHTML = gameBoard;
-});
+// Initialize game state
 var playerScore = 0;
 var computerScore = 0;
-var announceText;
 var nTies = 0;
-document
-    .getElementById("container")
-    .addEventListener("click", function (event) {
-    var button = event.target;
-    console.log(button);
-    if (button &&
-        button instanceof HTMLButtonElement &&
-        button.id != "start-game" &&
-        button.id != "try-again") {
-        var playerChoice = Choice[button.id];
-        var computerChoice = getComputerChoice();
-        var score = playRound(playerChoice, computerChoice);
-        if (score === 1) {
-            playerScore += 1;
-            announceText = "You win! ".concat(playerChoice, " beats ").concat(computerChoice);
+var announceText;
+// Event Listeners
+startButton.addEventListener("click", startGame());
+container.addEventListener("click", handleGamePlay());
+// Functions
+function handleGamePlay() {
+    return function (event) {
+        var button = event.target;
+        if (isButton(button) && button.id === "try-again") {
+            resetGame();
         }
-        else if (score === -1) {
-            computerScore += 1;
-            announceText = "You lose :( ".concat(computerChoice, " beats ").concat(playerChoice);
+        else if (isButton(button) && button.id != "start-game") {
+            playGame(button);
         }
-        else {
-            nTies += 1;
-            announceText = "It's a tie: You both chose ".concat(computerChoice);
-        }
-        var humanResult = "Score: ".concat(playerScore);
-        var computerResult = "Score: ".concat(computerScore);
-        var humanScoreDisplay = document.getElementById("human-score");
-        var computerScoreDisplay = document.getElementById("computer-score");
-        var roundAnnouncement = document.getElementById("roundAnnouncement");
-        if (playerScore === 5) {
-            endGame("Humans Win!");
-        }
-        else if (computerScore === 5) {
-            endGame("Machines Win :(");
-        }
-        else {
-            roundAnnouncement.textContent = announceText;
-        }
-        humanScoreDisplay.textContent = humanResult;
-        computerScoreDisplay.textContent = computerResult;
+    };
+}
+function playGame(button) {
+    var playerChoice = Choice[button.id];
+    var computerChoice = getComputerChoice();
+    var score = playRound(playerChoice, computerChoice);
+    if (score === 1) {
+        playerScore += 1;
+        announceText = "You win! ".concat(playerChoice, " beats ").concat(computerChoice);
     }
-});
+    else if (score === -1) {
+        computerScore += 1;
+        announceText = "You lose :( ".concat(computerChoice, " beats ").concat(playerChoice);
+    }
+    else {
+        nTies += 1;
+        announceText = "It's a tie: You both chose ".concat(computerChoice);
+    }
+    var humanResult = "Score: ".concat(playerScore);
+    var computerResult = "Score: ".concat(computerScore);
+    var humanScoreDisplay = document.getElementById("human-score");
+    var computerScoreDisplay = document.getElementById("computer-score");
+    var roundAnnouncement = document.getElementById("roundAnnouncement");
+    if (playerScore === 5) {
+        endGame("Humans Win!");
+    }
+    else if (computerScore === 5) {
+        endGame("Machines Win :(");
+    }
+    else {
+        roundAnnouncement.textContent = announceText;
+    }
+    humanScoreDisplay.textContent = humanResult;
+    computerScoreDisplay.textContent = computerResult;
+}
+function isButton(button) {
+    return button && button instanceof HTMLButtonElement;
+}
+function startGame() {
+    return function () {
+        var _a;
+        var elem = document.getElementById("start-game-div");
+        console.log(elem);
+        (_a = elem.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(elem);
+        elem = document.getElementById("container");
+        elem.innerHTML = gameBoard;
+    };
+}
 function resetGame() {
     playerScore = 0;
     computerScore = 0;
     nTies = 0;
+    container.innerHTML = gameBoard;
 }
 function endGame(text) {
     var _a;
@@ -75,7 +94,7 @@ function endGame(text) {
     var tryAgainButton = document.getElementById("try-again");
     tryAgainButton.addEventListener("click", function () {
         resetGame();
-        elem.innerHTML = ""; // Clear the container
+        elem.innerHTML = "";
         elem.innerHTML = gameBoard;
     });
 }
