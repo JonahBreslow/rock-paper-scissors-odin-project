@@ -14,6 +14,7 @@ const roundAnnouncement = document.getElementById("roundAnnouncement")!;
 
 // Game board HTML
 let gameBoard = `<div id="game-container">
+      <h2>Choose your weapon!</h2>
       <div
         class="flex flex-wrap gap50 justify-center bottom-margin-20 top-margin-50"
       >

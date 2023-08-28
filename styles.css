@@ -14,6 +14,7 @@ body {
 #try-again {
     border: 2px dotted blanchedalmond;
     padding: 20px 40px;
+    animation: glowing 1300ms infinite;
 }
 
 .choice-key {
@@ -140,3 +141,18 @@ button:focus {
 .full-height {
     height: 40vh;
 }
+
+@keyframes glowing {
+    0% {
+      background-color: #2ba805;
+      box-shadow: 0 0 5px #2ba805;
+    }
+    50% {
+      background-color: #2ba805;
+      box-shadow: 0 0 20px #49e819;
+    }
+    100% {
+      background-color: #2ba805;
+      box-shadow: 0 0 5px #2ba805;
+    }
+  }
