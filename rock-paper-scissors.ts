@@ -19,19 +19,19 @@ let gameBoard = `<div id="game-container">
       >
         <div>
           <h2>Human</h2>
-          <div class="flex justify-center gap5 border-solid padding-100">
-            <button id="Rock">Rock</button>
-            <button id="Paper">Paper</button>
-            <button id="Scissors">Scissors</button>
+          <div class="flex justify-center gap5 padding-100 grey">
+            <button class='choice-key' id="Rock">Rock</button>
+            <button class='choice-key' id="Paper">Paper</button>
+            <button class='choice-key' id="Scissors">Scissors</button>
           </div>
           <h3 id="human-score">Score:</h3>
         </div>
         <div>
           <h2>Computer</h2>
-          <div class="flex justify-center gap5 border-solid padding-100">
-            <button id="cRock">Rock</button>
-            <button id="cPaper">Paper</button>
-            <button id="cScissors">Scissors</button>
+          <div id='computer-board' class="flex justify-center gap5  padding-100 grey">
+            <button class='choice-key' id="cRock">Rock</button>
+            <button class='choice-key' id="cPaper">Paper</button>
+            <button class='choice-key' id="cScissors">Scissors</button>
           </div>
           <h3 id="computer-score">Score:</h3>
         </div>
@@ -54,8 +54,15 @@ container.addEventListener("click", handleGamePlay());
 function handleGamePlay(): (this: HTMLElement, ev: MouseEvent) => any {
   return function (event: MouseEvent) {
     const button = event.target as HTMLButtonElement;
+    const invalidButton = ["cRock", "cPaper", "cScissors"]
     if (isButton(button) && button.id === "try-again") {
       resetGame();
+    } else if (isButton(button) && button.id === "cRock") {
+      console.log("skipping computer choice");
+    } else if (isButton(button) && button.id === "cPaper") {
+      console.log("skipping computer choice");
+    } else if (isButton(button) && button.id === "cScissors") {
+      console.log("skipping computer choice");
     } else if (isButton(button) && button.id != "start-game") {
       playGame(button);
     }
@@ -65,6 +72,40 @@ function handleGamePlay(): (this: HTMLElement, ev: MouseEvent) => any {
 function playGame(button: HTMLButtonElement): undefined {
   let playerChoice = Choice[button.id];
   let computerChoice = getComputerChoice();
+  console.log(computerChoice);
+  switch (computerChoice) {
+    case Choice.Rock:
+      let elem = document.getElementById("cRock")!;
+      elem.parentNode?.removeChild(elem);
+      elem = document.getElementById('computer-board')!;
+      elem.innerHTML = `
+      <button class='choice-key chosen' id="cRock">Rock</button>
+      <button class='choice-key' id="cPaper">Paper</button>
+      <button class='choice-key' id="cScissors">Scissors</button>
+      `;
+      break
+    case Choice.Paper:
+      elem = document.getElementById("cPaper")!;
+      elem.parentNode?.removeChild(elem);
+      elem = document.getElementById('computer-board')!;
+      elem.innerHTML = `
+      <button class='choice-key' id="cRock">Rock</button>
+      <button class='choice-key chosen' id="cPaper">Paper</button>
+      <button class='choice-key' id="cScissors">Scissors</button>
+      `;
+      break
+    case Choice.Scissors:
+      elem = document.getElementById("cScissors")!;
+      elem.parentNode?.removeChild(elem);
+      elem = document.getElementById('computer-board')!;
+      elem.innerHTML = `
+      <button class='choice-key' id="cRock">Rock</button>
+      <button class='choice-key' id="cPaper">Paper</button>
+      <button class='choice-key chosen' id="cScissors">Scissors</button>
+      `;
+      break
+  }
+
   let score = playRound(playerChoice, computerChoice);
   if (score === 1) {
     playerScore += 1;
@@ -118,7 +159,7 @@ function endGame(text: string): undefined {
   elem.parentNode?.removeChild(elem);
   elem = document.getElementById("container")!;
   elem.innerHTML = `<h2>GAME OVER</h2>
-  <h3>${text}</h3>
+  <h2>${text}</h2>
   <div
         id="start-game-div"
         class="flex justify-center align-center full-height"

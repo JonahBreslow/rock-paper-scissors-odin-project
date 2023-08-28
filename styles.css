@@ -1,3 +1,42 @@
+html * {
+    font-family: 'Press Start 2P';
+    color: white;
+    background-color: rgb(15, 15, 77);
+}
+
+html, 
+body {
+    min-height: 100%;
+}
+
+
+#start-game,
+#try-again {
+    border: 2px dotted blanchedalmond;
+    padding: 20px 40px;
+}
+
+.choice-key {
+    padding: 20px 40px;
+} 
+
+button:hover {
+    background-color: rgb(176, 101, 246);
+    transform: scale(1.1);
+}
+
+button:focus {
+    background-color: rgb(176, 101, 246);
+}
+
+.chosen {
+    background-color: rgb(176, 101, 246);
+}
+
+.grey {
+    background-color: grey;
+}
+
 .center {
     text-align: center;
 }
@@ -27,7 +66,7 @@
 }
 
 .gap5 {
-    gap: 5px;
+    gap: 15px;
 }
 
 .gap50 {
@@ -67,7 +106,7 @@
 }
 
 .border-solid {
-    border: solid black;
+    border: dotted white;
 }
 
 .lpad-10 {
